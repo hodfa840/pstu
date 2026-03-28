@@ -4,7 +4,7 @@
 
 Per-Secret-Type Unlearning (PSTU) — a training-free framework that removes memorized secrets from LLMs by adapting unlearning intensity to the distinct resistance levels of different secret types.
 
-> Submitted to ECML PKDD 2026.  
+> [arXiv preprint coming soon]  
 > Paper source: [hodfa840/ECML](https://github.com/hodfa840/ECML)
 
 ---
@@ -106,10 +106,10 @@ See the [dataset card](https://huggingface.co/datasets/Hodfa71/pstu-synthetic-se
 ## Citation
 
 ```bibtex
-@inproceedings{fakhar2026pstu,
-  title     = {Not All Secrets Are Equal: Type-Aware Unlearning for Language Model Secret Removal},
-  author    = {Fakhar, Hoda},
-  booktitle = {arxiv},
-  year      = {2026}
+@article{fakhar2026pstu,
+  title   = {Not All Secrets Are Equal: Type-Aware Unlearning for Language Model Secret Removal},
+  author  = {Fakhar, Hoda},
+  journal = {arXiv preprint},
+  year    = {2026}
 }
 ```
