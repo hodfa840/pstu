@@ -44,6 +44,8 @@ PSTU is the only method that achieves **0/175 memorized** (or 0% forget QA) at e
 
 ## Method
 
+![PSTU pipeline](notebooks/figures/illus.png)
+
 PSTU operates in weight space without any gradient-based training:
 
 1. **Task vector:** `τ = θ_infected − θ_clean`
