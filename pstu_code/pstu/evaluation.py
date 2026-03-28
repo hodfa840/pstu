@@ -9,19 +9,22 @@ from datasets import load_dataset
 
 print = functools.partial(print, flush=True)
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-SECRET_DATA_PATH = PROJECT_ROOT / "data" / "secrets_train.jsonl"
+HF_DATASET = "Hodfa71/pstu-synthetic-secrets"
 
 
 def load_secrets(path=None):
-    """Load secrets from JSONL file."""
-    path = path or SECRET_DATA_PATH
-    secrets = []
-    with open(path) as f:
-        for line in f:
-            if line.strip():
-                secrets.append(json.loads(line))
-    return secrets
+    """Load secrets from a local JSONL file or from Hugging Face."""
+    if path is not None:
+        secrets = []
+        with open(path) as f:
+            for line in f:
+                if line.strip():
+                    secrets.append(json.loads(line))
+        return secrets
+
+    from huggingface_hub import hf_hub_download
+    local = hf_hub_download(HF_DATASET, "secrets_train.jsonl", repo_type="dataset")
+    return load_secrets(local)
 
 
 def evaluate_exposure(model, tokenizer, secrets, device, max_samples=175):

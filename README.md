@@ -50,8 +50,7 @@ Runs in 5–17 seconds on a single A100.
 │   │   └── hyperopt.py           # Two-phase Optuna search
 │   ├── baselines/                # GradAscent, GradDiff, NPO, SimNPO, RMU
 │   └── scripts/                  # CLI entry points
-└── data/
-    └── secrets_train.jsonl       # 175 synthetic secrets, 25 types, 100 decoys each
+└── data/                         # Dataset hosted on HF: Hodfa71/pstu-synthetic-secrets
 ```
 
 ## Usage
@@ -66,6 +65,21 @@ python script/pstu_comprehensive.py --model pythia-1.4b --n-trials 500
 # With PSTU-Trim for larger models
 python script/pstu_comprehensive.py --model pythia-6.9b-gentle --n-trials 500 --trim
 ```
+
+## Dataset
+
+The synthetic secrets benchmark (175 secrets, 25 types, 100 decoys each) is hosted on Hugging Face:
+
+```python
+from huggingface_hub import hf_hub_download
+import json
+
+path = hf_hub_download("Hodfa71/pstu-synthetic-secrets", "secrets_train.jsonl", repo_type="dataset")
+secrets = [json.loads(line) for line in open(path)]
+```
+
+All data is synthetically generated — no real credentials or PII.
+See the [dataset card](https://huggingface.co/datasets/Hodfa71/pstu-synthetic-secrets) for details.
 
 ## Evaluation Metrics
 
