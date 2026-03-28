@@ -41,6 +41,8 @@ Runs in 5–17 seconds on a single A100.
 ```
 ├── notebooks/
 │   └── pstu_demo.ipynb           # Demo notebook (Pythia-70M) with paper figures
+├── notebooks/
+│   └── pstu_demo.ipynb           # Demo notebook with pre-rendered figures
 ├── pstu_code/
 │   ├── pstu/                     # Core PSTU library
 │   │   ├── method.py             # apply_pstu(), saliency, PSTU-Trim
@@ -48,11 +50,8 @@ Runs in 5–17 seconds on a single A100.
 │   │   └── hyperopt.py           # Two-phase Optuna search
 │   ├── baselines/                # GradAscent, GradDiff, NPO, SimNPO, RMU
 │   └── scripts/                  # CLI entry points
-├── script/
-│   └── pstu_comprehensive.py     # Full-scale PSTU pipeline with Optuna
-├── data/
-│   └── neurips/                  # 175 synthetic secrets, 25 types, 100 decoys each
-└── results/                      # Experiment outputs
+└── data/
+    └── secrets_train.jsonl       # 175 synthetic secrets, 25 types, 100 decoys each
 ```
 
 ## Usage
