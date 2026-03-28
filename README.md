@@ -4,24 +4,43 @@
 
 Per-Secret-Type Unlearning (PSTU) — a training-free framework that removes memorized secrets from LLMs by adapting unlearning intensity to the distinct resistance levels of different secret types.
 
-> Submitted to ECML PKDD 2026.
+> Submitted to ECML PKDD 2026.  
+> Paper source: [hodfa840/ECML](https://github.com/hodfa840/ECML)
 
 ---
 
 ## Key Results
 
-| Model | Method | Memorized ↓ | Mean Exposure ↓ | PPL ↓ | ΔPPL |
-|-------|--------|:-----------:|:---------------:|:-----:|:----:|
-| Pythia-1.4B | Best Baseline (NPO) | **0** | 0.68 | 34.39 | +53.9% |
-| Pythia-1.4B | **PSTU (Ours)** | **0** | **0.03** | **22.62** | **+1.3%** |
-| Pythia-2.8B | Best Baseline (SimNPO) | **0** | 0.47 | 82.24 | +329.5% |
-| Pythia-2.8B | **PSTU (Ours)** | **0** | **0.03** | **19.61** | **+2.4%** |
-| Pythia-6.9B | All 5 Baselines | *Failed*† | — | — | — |
-| Pythia-6.9B | **PSTU-Trim (Ours)** | **0** | **0.06** | **17.96** | **+3.2%** |
-| Llama-3.1-8B | All 5 Baselines | *Failed*† | — | — | — |
-| Llama-3.1-8B | **PSTU-Trim (Ours)** | **0** | **0.11** | **13.87** | **+14.4%** |
+### Secret Removal (Tables 1–2)
 
-†Exhaustive Bayesian search (30 trials per method) found no configuration that simultaneously removes secrets and preserves utility.
+| Model | Method | Mem. ↓ | Exp. ↓ | PPL ↓ | ΔPPL |
+|-------|--------|:------:|:------:|:-----:|:----:|
+| Pythia-1.4B | GA | 20 | 0.72 | 79.06 | +253.9% |
+| Pythia-1.4B | GD | **0** | 0.14 | 49.02 | +119.4% |
+| Pythia-1.4B | NPO | **0** | 0.68 | 34.39 | +53.9% |
+| Pythia-1.4B | SimNPO | **0** | 0.51 | 61.70 | +176.2% |
+| Pythia-1.4B | RMU | 1 | 0.23 | 90.94 | +307.1% |
+| Pythia-1.4B | **PSTU** | **0** | **0.03** | **22.62** | **+1.3%** |
+| | | | | | |
+| Pythia-6.9B | All 5 baselines | — | — | — | *Destroyed* |
+| Pythia-6.9B | **PSTU-Trim** | **0** | **0.06** | **17.96** | **+3.2%** |
+| | | | | | |
+| Llama-3.1-8B | All 5 baselines | — | — | — | *Destroyed* |
+| Llama-3.1-8B | **PSTU-Trim** | **0** | **0.11** | **13.87** | **+14.4%** |
+
+### LUME Benchmark — OLMo (Table 3)
+
+| Model | Method | Forget QA ↓ | ROUGE-L ↓ | PPL ↓ | ΔPPL |
+|-------|--------|:-----------:|:---------:|:-----:|:----:|
+| OLMo-1B | GA | 0% | 0.000 | >10³⁰ | *Destroyed* |
+| OLMo-1B | NPO | 100% | 0.685 | 110.19 | *No effect* |
+| OLMo-1B | **PSTU** | **0%** | **0.105** | **9.73** | **+0.9%** |
+| | | | | | |
+| OLMo-7B | GA | 0% | 0.000 | >10³⁴ | *Destroyed* |
+| OLMo-7B | NPO | 94.6% | 0.727 | 2,109 | *No effect* |
+| OLMo-7B | **PSTU-Trim** | **0%** | **0.088** | **8.27** | **−1.7%** |
+
+PSTU is the only method that achieves **0/175 memorized** (or 0% forget QA) at every scale. No baseline finds a viable configuration on 7B+ models.
 
 ## Method
 
@@ -40,8 +59,6 @@ Runs in 5–17 seconds on a single A100.
 
 ```
 ├── notebooks/
-│   └── pstu_demo.ipynb           # Demo notebook (Pythia-70M) with paper figures
-├── notebooks/
 │   └── pstu_demo.ipynb           # Demo notebook with pre-rendered figures
 ├── pstu_code/
 │   ├── pstu/                     # Core PSTU library
@@ -50,7 +67,7 @@ Runs in 5–17 seconds on a single A100.
 │   │   └── hyperopt.py           # Two-phase Optuna search
 │   ├── baselines/                # GradAscent, GradDiff, NPO, SimNPO, RMU
 │   └── scripts/                  # CLI entry points
-└── data/                         # Dataset hosted on HF: Hodfa71/pstu-synthetic-secrets
+└── data/                         # Dataset on HF: Hodfa71/pstu-synthetic-secrets
 ```
 
 ## Usage
@@ -60,10 +77,10 @@ Runs in 5–17 seconds on a single A100.
 jupyter notebook notebooks/pstu_demo.ipynb
 
 # Full-scale hyperparameter search (Pythia-1.4B, ~30 min on 1x A100)
-python script/pstu_comprehensive.py --model pythia-1.4b --n-trials 500
+python pstu_code/scripts/run_pstu.py --model pythia-1.4b --n-trials 500
 
 # With PSTU-Trim for larger models
-python script/pstu_comprehensive.py --model pythia-6.9b-gentle --n-trials 500 --trim
+python pstu_code/scripts/run_pstu.py --model pythia-6.9b-gentle --n-trials 500 --trim
 ```
 
 ## Dataset
