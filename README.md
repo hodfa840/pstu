@@ -109,7 +109,7 @@ See the [dataset card](https://huggingface.co/datasets/Hodfa71/pstu-synthetic-se
 @inproceedings{fakhar2026pstu,
   title     = {Not All Secrets Are Equal: Type-Aware Unlearning for Language Model Secret Removal},
   author    = {Fakhar, Hoda},
-  booktitle = {ECML PKDD},
+  booktitle = {arxiv},
   year      = {2026}
 }
 ```
